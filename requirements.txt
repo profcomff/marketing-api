@@ -1,0 +1,9 @@
+fastapi
+fastapi-sqlalchemy
+psycopg2-binary
+pydantic[dotenv]
+uvicorn
+alembic
+SQLAlchemy
+gunicorn
+pytest

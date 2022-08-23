@@ -1,0 +1,35 @@
+# https://copier.readthedocs.io/en/stable/configuring/
+
+# Answers
+project_name:
+  type: str
+  help: Your project name
+
+project_description:
+  type: str
+  help: Your project description
+  multiline: true
+
+author_fullname:
+  type: str
+  help: Your full name
+
+copyright_date:
+  type: int
+  help: The copyright date
+  default: 2022
+
+python_package_name:
+  type: str
+  help: Your Python package name (for `import NAME` in Python code)
+  default: "{{ project_name|lower|replace('-', '_')|replace(' ', '_') }}"
+
+# Settings
+_min_copier_version: "6.1.0"
+_subdirectory: project
+_templates_suffix: .jinja
+_skip_if_exists:
+  - CHANGELOG.md
+#_tasks:
+#  - python3 hooks/post_generation.py
+#  - rm -rf hooks
