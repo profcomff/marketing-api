@@ -14,6 +14,7 @@ class Actions(str, enum.Enum):
 
 class ActionsInfo(Base):
     """Actions from user"""
+
     id = Column(sqlalchemy.Integer, primary_key=True)
     user_key = Column(sqlalchemy.String, nullable=False)
     action = Column(sqlalchemy.String, nullable=False)

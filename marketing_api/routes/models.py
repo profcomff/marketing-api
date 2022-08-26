@@ -11,4 +11,3 @@ class ActionInfo(Base):
     action: str
     path_from: AnyHttpUrl
     path_to: AnyHttpUrl | None
-

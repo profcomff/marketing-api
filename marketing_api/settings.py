@@ -4,6 +4,7 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     """Application settings"""
+
     DB_DSN: PostgresDsn
     API_URL: AnyHttpUrl = "http://127.0.0.1:8000"
     CORS_ALLOW_ORIGINS: list[str] = ['*']

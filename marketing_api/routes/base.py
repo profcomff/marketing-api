@@ -12,7 +12,7 @@ app = FastAPI()
 
 @app.exception_handler(Exception)
 def http_sqlalchemy_error_handler():
-    return PlainTextResponse("Error",  status_code=500)
+    return PlainTextResponse("Error", status_code=500)
 
 
 app.add_middleware(
