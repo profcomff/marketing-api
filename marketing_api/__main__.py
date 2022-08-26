@@ -1,4 +1,4 @@
-from engine.routes.base import app
+from marketing_api.routes.base import app
 import uvicorn
 
 

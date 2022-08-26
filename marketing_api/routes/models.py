@@ -1,7 +1,7 @@
 import datetime
 from pydantic import BaseModel, AnyHttpUrl, validator
-from engine.models.db import Actions
-from engine.exceptions import ActionError
+from marketing_api.models.db import Actions
+from marketing_api.exceptions import ActionError
 
 
 class Base(BaseModel):

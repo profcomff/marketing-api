@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY ./requirements.txt /app/
 COPY ./gunicorn_conf.py /app/gunicorn_conf.py
-COPY engine /app/engine
+COPY marketing_api /app/engine
 
 RUN pip install --no-cache-dir -r /app/requirements.txt
 

@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from .models import ActionInfo
 from fastapi_sqlalchemy import db
 from sqlalchemy.exc import SQLAlchemyError
-from engine.methods.db_utils import add_action_from_user_info
+from marketing_api.methods.db_utils import add_action_from_user_info
 
 action_router = APIRouter(prefix='/action', tags=['user_actions'])
 

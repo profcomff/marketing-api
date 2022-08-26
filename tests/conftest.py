@@ -3,10 +3,10 @@ import unittest
 import requests
 import uvicorn
 from fastapi.testclient import TestClient
-from engine.routes.base import app
+from marketing_api.routes.base import app
 from multiprocessing import Process
-from engine.settings import get_settings
-from engine.routes.models import ActionInfo
+from marketing_api.settings import get_settings
+from marketing_api.routes.models import ActionInfo
 
 
 class PostTest(unittest.TestCase):
