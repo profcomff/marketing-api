@@ -13,11 +13,10 @@ class ActionInfo(Base):
     user_key: str
     action: str
     path_from: AnyHttpUrl
-    path_to: AnyHttpUrl
+    path_to: AnyHttpUrl | None
 
     @classmethod
-    @validator("action")
-    def validate_action(cls, v):
-        if v not in [a.name for a in Actions]:
-            raise ActionError(v)
-
+    @validator('action')
+    def print(cls, value):
+        if value not in [a.name for a in Actions]:
+            raise ValueError(f"Invalid action {value}")

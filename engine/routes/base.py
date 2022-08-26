@@ -1,11 +1,20 @@
+import starlette.requests
 from ..settings import get_settings
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 from fastapi_sqlalchemy import DBSessionMiddleware
+from ..exceptions import DB_Error
 from .action import action_router
 from fastapi import FastAPI
 
 settings = get_settings()
 app = FastAPI()
+
+
+@app.exception_handler(DB_Error)
+def http_DB_error_handler():
+    return PlainTextResponse("DB_error",  status_code=500)
+
 
 app.add_middleware(
     DBSessionMiddleware,

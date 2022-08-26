@@ -1,10 +1,11 @@
-from pydantic import BaseSettings, PostgresDsn
+from pydantic import BaseSettings, PostgresDsn, AnyHttpUrl
 from functools import lru_cache
 
 
 class Settings(BaseSettings):
     """Application settings"""
     DB_DSN: PostgresDsn
+    API_URL: AnyHttpUrl = "http://127.0.0.1:8000"
     CORS_ALLOW_ORIGINS: list[str] = ['*']
     CORS_ALLOW_CREDENTIALS: bool = True
     CORS_ALLOW_METHODS: list[str] = ['*']
@@ -14,7 +15,7 @@ class Settings(BaseSettings):
         """Pydantic BaseSettings config"""
 
         case_sensitive = True
-        env_file = "../.env"
+        env_file = ".env"
 
 
 @lru_cache

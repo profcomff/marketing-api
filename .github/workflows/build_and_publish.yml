@@ -46,9 +46,9 @@ jobs:
     runs-on: [self-hosted, Linux]
     environment:
       name: Testing
-      url: https://timetable.ui.test.profcomff.com/
+      url: https://marketing.api.test.profcomff.com/
     env:
-      CONTAITER_NAME: com_profcomff_ui_timetable_test
+      CONTAITER_NAME: com_profcomff_api_marketing_test
     permissions:
       packages: read
 
