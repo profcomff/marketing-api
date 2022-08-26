@@ -3,7 +3,7 @@ from fastapi_sqlalchemy import db
 from starlette.responses import PlainTextResponse
 
 from .models import ActionInfo
-from ..models.db import ActionsInfo
+from marketing_api.models import ActionsInfo
 
 action_router = APIRouter(prefix='/action', tags=['User Action'])
 

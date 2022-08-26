@@ -4,7 +4,7 @@ from fastapi.responses import PlainTextResponse
 from fastapi_sqlalchemy import DBSessionMiddleware
 
 from .action import action_router
-from ..settings import get_settings
+from marketing_api import get_settings
 
 settings = get_settings()
 app = FastAPI()
