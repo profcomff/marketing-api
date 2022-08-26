@@ -15,8 +15,3 @@ class ActionInfo(Base):
     path_from: AnyHttpUrl
     path_to: AnyHttpUrl | None
 
-    @classmethod
-    @validator('action')
-    def print(cls, value):
-        if value not in [a.name for a in Actions]:
-            raise ValueError(f"Invalid action {value}")
