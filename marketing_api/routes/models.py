@@ -12,5 +12,6 @@ class ActionInfo(Base):
     path_from: AnyHttpUrl
     path_to: AnyHttpUrl | None
 
+
 class User(Base):
     id: int
