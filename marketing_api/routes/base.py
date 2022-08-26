@@ -29,7 +29,7 @@ async def create_user():
 
 
 @app.exception_handler(Exception)
-def http_sqlalchemy_error_handler():
+def http_error_handler():
     return PlainTextResponse("Error", status_code=500)
 
 
