@@ -7,7 +7,10 @@ class Base(BaseModel):
 
 
 class ActionInfo(Base):
-    user_key: str
+    user_id: int
     action: str
     path_from: AnyHttpUrl
     path_to: AnyHttpUrl | None
+
+class User(Base):
+    id: int
