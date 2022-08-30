@@ -110,7 +110,7 @@ jobs:
 
           docker run \
             --detach \
-            --restart on-failure:3 \
+            --restart always \
             --network=web \
             --env DB_DSN=${{ secrets.DB_DSN }} \
             --name ${{ env.CONTAITER_NAME }} \
