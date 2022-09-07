@@ -20,6 +20,7 @@ class ActionsInfo(Base):
     action = Column(sqlalchemy.String, nullable=False)
     path_from = Column(sqlalchemy.String, nullable=False)
     path_to = Column(sqlalchemy.String, nullable=True)
+    additional_data = Column(sqlalchemy.String, nullable=True)
     create_ts = Column(sqlalchemy.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
@@ -28,3 +29,5 @@ class ActionsInfo(Base):
 
 class User(Base):
     id = Column(sqlalchemy.Integer, primary_key=True)
+    union_number = Column(sqlalchemy.Integer, nullable=True)
+    create_ts = Column(sqlalchemy.DateTime, nullable=False, default=datetime.utcnow)
