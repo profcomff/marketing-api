@@ -29,12 +29,12 @@ def test_can_post_with_user_id():
 
 def test_cannot_post_invalid_info():
     client = TestClient(app)
-    action = ActionInfo(
-        action="INSTALL",
-        path_to="http://127.0.0.1:8000/me",
-    )
-    response = client.post(f"/v1/action", action.json())
-    assert response.status_code == 500
+    action = {
+        "action":"INSTALL",
+        "path_to":"http://127.0.0.1:8000/me",
+    }
+    response = client.post(f"/v1/action", json=action)
+    assert response.status_code == 422
 
 
 def test_can_patch_user():

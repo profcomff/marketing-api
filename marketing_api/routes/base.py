@@ -10,6 +10,7 @@ from marketing_api import get_settings
 from marketing_api.models import ActionsInfo
 from .models import ActionInfo, User
 from marketing_api.models.db import User as DbUser
+from pydantic import ValidationError
 
 settings = get_settings()
 app = FastAPI()
@@ -17,12 +18,9 @@ app = FastAPI()
 
 @app.post('/v1/action')
 async def write_action(user_action_info: ActionInfo):
-    try:
-        db.session.add(ActionsInfo(**user_action_info.dict()))
-        db.session.flush()
-        return PlainTextResponse(status_code=204)
-    except IntegrityError:
-        return PlainTextResponse("Invalid data", status_code=500)
+    db.session.add(ActionsInfo(**user_action_info.dict()))
+    db.session.flush()
+    return PlainTextResponse(status_code=204)
 
 
 @app.post('/v1/user', response_model=User)
@@ -44,8 +42,12 @@ async def patch_user(id: int, union_number: int):
         return result
 
 
+@app.exception_handler(ValidationError)
+async def http_validation_error_handler(req, exc):
+    return PlainTextResponse("Invalid data", status_code=500)
+
 @app.exception_handler(Exception)
-def http_error_handler(req, exc):
+async def http_error_handler(req, exc):
     return PlainTextResponse("Error", status_code=500)
 
 
