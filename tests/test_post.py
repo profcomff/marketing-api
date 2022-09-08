@@ -12,7 +12,7 @@ def test_can_post_without_user_id():
         path_to="http://127.0.0.1:8000/me"
     )
     response = client.post(f"/v1/action", action.json())
-    assert response.status_code == 204
+    assert response.status_code == 200
 
 
 def test_can_post_with_user_id():
@@ -24,7 +24,7 @@ def test_can_post_with_user_id():
         path_to="http://127.0.0.1:8000/me"
     )
     response = client.post(f"/v1/action", action.json())
-    assert response.status_code == 204
+    assert response.status_code == 200
 
 
 def test_cannot_post_invalid_info():

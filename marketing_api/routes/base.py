@@ -20,7 +20,7 @@ app = FastAPI()
 async def write_action(user_action_info: ActionInfo):
     db.session.add(ActionsInfo(**user_action_info.dict()))
     db.session.flush()
-    return PlainTextResponse(status_code=204)
+    return PlainTextResponse(status_code=200)
 
 
 @app.post('/v1/user', response_model=User)
