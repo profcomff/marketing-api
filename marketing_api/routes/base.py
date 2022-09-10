@@ -36,15 +36,15 @@ async def patch_user(id: int, union_number: int):
     result: DbUser = db.session.query(DbUser).filter(DbUser.id == id).one_or_none()
     if not result:
         raise HTTPException(404, "No user found")
-    else:
-        result.union_number = union_number
-        db.session.flush()
-        return result
+    result.union_number = union_number
+    db.session.flush()
+    return result
 
 
 @app.exception_handler(ValidationError)
 async def http_validation_error_handler(req, exc):
-    return PlainTextResponse("Invalid data", status_code=500)
+    return PlainTextResponse("Invalid data", status_code=422)
+
 
 @app.exception_handler(Exception)
 async def http_error_handler(req, exc):

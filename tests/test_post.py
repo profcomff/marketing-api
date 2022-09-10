@@ -48,7 +48,3 @@ def test_user_create():
     client = TestClient(app)
     response = client.post("/v1/user")
     assert response.status_code == 200
-
-
-if __name__ == "__main__":
-    test_can_patch_user()
