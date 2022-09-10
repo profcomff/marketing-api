@@ -16,4 +16,4 @@ class ActionInfo(Base):
 
 class User(Base):
     id: int
-    union_number: int | None
+    union_number: str | None

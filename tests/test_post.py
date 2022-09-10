@@ -41,7 +41,9 @@ def test_can_patch_user():
     client = TestClient(app)
     db_user = client.post("/v1/user")
     user = User(**db_user.json())
-    client.patch(f"/v1/user/{user.id}?union_number={406}")
+    user.union_number = "666"
+    res = client.patch(f"/v1/user/{user.id}", data=user.json())
+    assert res.json() == user.dict()
 
 
 def test_user_create():

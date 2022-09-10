@@ -29,7 +29,7 @@ class ActionsInfo(Base):
 
 class User(Base):
     id = Column(sqlalchemy.Integer, primary_key=True)
-    union_number = Column(sqlalchemy.Integer, nullable=True)
+    union_number = Column(sqlalchemy.String, nullable=True)
     modify_ts = Column(sqlalchemy.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
     create_ts = Column(sqlalchemy.DateTime, nullable=False, default=datetime.utcnow)
 

@@ -32,11 +32,11 @@ async def create_user():
 
 
 @app.patch('/v1/user/{id}', response_model=User)
-async def patch_user(id: int, union_number: int):
-    result: DbUser = db.session.query(DbUser).filter(DbUser.id == id).one_or_none()
+async def patch_user(patched_user: User):
+    result: DbUser = db.session.query(DbUser).filter(DbUser.id == patched_user.id).one_or_none()
     if not result:
         raise HTTPException(404, "No user found")
-    result.union_number = union_number
+    result.union_number = patched_user.union_number
     db.session.flush()
     return result
 
