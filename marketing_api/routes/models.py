@@ -7,11 +7,17 @@ class Base(BaseModel):
 
 
 class ActionInfo(Base):
-    user_id: int
+    user_id: int | None
     action: str
-    path_from: str | None
+    additional_data: str | None
+    path_from: str
     path_to: str | None
 
 
 class User(Base):
     id: int
+    union_number: str | None
+
+
+class UserPatch(Base):
+    union_number: str
