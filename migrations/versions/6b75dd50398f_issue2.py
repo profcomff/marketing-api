@@ -1,6 +1,6 @@
 from alembic import op
 import sqlalchemy as sa
-
+import datetime
 
 revision = '6b75dd50398f'
 down_revision = 'f2d45b6daecf'
@@ -11,8 +11,12 @@ depends_on = None
 def upgrade():
     op.add_column('actions_info', sa.Column('additional_data', sa.String(), nullable=True))
     op.add_column('user', sa.Column('union_number', sa.String(), nullable=True))
-    op.add_column('user', sa.Column('modify_ts', sa.DateTime(), nullable=False))
-    op.add_column('user', sa.Column('create_ts', sa.DateTime(), nullable=False))
+    op.add_column('user', sa.Column('modify_ts', sa.DateTime(), nullable=True))
+    op.execute(f'UPDATE "user" SET modify_ts = current_timestamp')
+    op.alter_column('user', 'modify_ts', nullable=False)
+    op.add_column('user', sa.Column('create_ts', sa.DateTime(), nullable=True))
+    op.execute(f'UPDATE "user" SET create_ts = current_timestamp')
+    op.alter_column('user', 'create_ts', nullable=False)
 
 
 def downgrade():
