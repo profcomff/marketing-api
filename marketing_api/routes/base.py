@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi import Path
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi.exceptions import HTTPException
@@ -8,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 import starlette
 from marketing_api import get_settings
 from marketing_api.models import ActionsInfo
-from .models import ActionInfo, User
+from .models import ActionInfo, User, UserPatch
 from marketing_api.models.db import User as DbUser
 from pydantic import ValidationError
 
@@ -31,9 +32,9 @@ async def create_user():
     return user
 
 
-@app.patch('/v1/user/{id}', response_model=User)
-async def patch_user(patched_user: User):
-    result: DbUser = db.session.query(DbUser).filter(DbUser.id == patched_user.id).one_or_none()
+@app.patch('/v1/user/{id}')
+async def patch_user(id: int, patched_user: UserPatch):
+    result: DbUser = db.session.query(DbUser).filter(DbUser.id == id).one_or_none()
     if not result:
         raise HTTPException(404, "No user found")
     result.union_number = patched_user.union_number

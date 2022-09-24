@@ -1,3 +1,5 @@
+import json
+
 from fastapi.testclient import TestClient
 
 from marketing_api.routes.base import app
@@ -30,8 +32,8 @@ def test_can_post_with_user_id():
 def test_cannot_post_invalid_info():
     client = TestClient(app)
     action = {
-        "action":"INSTALL",
-        "path_to":"http://127.0.0.1:8000/me",
+        "action": "INSTALL",
+        "path_to": "http://127.0.0.1:8000/me",
     }
     response = client.post(f"/v1/action", json=action)
     assert response.status_code == 422
@@ -40,10 +42,10 @@ def test_cannot_post_invalid_info():
 def test_can_patch_user():
     client = TestClient(app)
     db_user = client.post("/v1/user")
-    user = User(**db_user.json())
-    user.union_number = "666"
-    res = client.patch(f"/v1/user/{user.id}", data=user.json())
-    assert res.json() == user.dict()
+    user_id = db_user.json()['id']
+    patch = json.dumps({'union_number': '666'})
+    res = client.patch(f"/v1/user/{user_id}", data=patch)
+    assert res.json() == json.dumps({'id': user_id, 'union_number': '666'})
 
 
 def test_user_create():

@@ -17,3 +17,7 @@ class ActionInfo(Base):
 class User(Base):
     id: int
     union_number: str | None
+
+
+class UserPatch(Base):
+    union_number: str
