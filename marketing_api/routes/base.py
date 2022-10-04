@@ -32,7 +32,7 @@ async def create_user():
     return user
 
 
-@app.patch('/v1/user/{id}')
+@app.patch('/v1/user/{id}', response_model=User)
 async def patch_user(id: int, patched_user: UserPatch):
     result: DbUser = db.session.query(DbUser).filter(DbUser.id == id).one_or_none()
     if not result:
@@ -65,3 +65,5 @@ app.add_middleware(
     allow_methods=settings.CORS_ALLOW_METHODS,
     allow_headers=settings.CORS_ALLOW_HEADERS,
 )
+
+
