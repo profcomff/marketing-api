@@ -3,7 +3,6 @@ WORKDIR /app
 RUN mkdir -p static/cache && mkdir -p static/photo/lecturer
 
 COPY ./requirements.txt /app/
-RUN pip install --no-cache-dir -r /app/requirements.txt
 
 ADD gunicorn_conf.py alembic.ini /app/
 ADD migrations /app/migrations
