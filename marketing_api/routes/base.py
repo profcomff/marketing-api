@@ -5,10 +5,12 @@ from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi.exceptions import HTTPException
 from fastapi_sqlalchemy import db
 from starlette.responses import PlainTextResponse
+from starlette.middleware.wsgi import WSGIMiddleware
 from sqlalchemy.exc import IntegrityError
 import starlette
 from marketing_api import get_settings
 from marketing_api.models import ActionsInfo
+from marketing_api.dashboard.base import dash_app
 from .models import ActionInfo, User, UserPatch
 from marketing_api.models.db import User as DbUser
 from pydantic import ValidationError
@@ -66,4 +68,5 @@ app.add_middleware(
     allow_headers=settings.CORS_ALLOW_HEADERS,
 )
 
+app.mount("/dashboard", WSGIMiddleware(dash_app.server))
 
