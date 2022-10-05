@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi.exceptions import HTTPException
 from fastapi_sqlalchemy import db
-from starlette.responses import PlainTextResponse
+from starlette.responses import PlainTextResponse, RedirectResponse
 from starlette.middleware.wsgi import WSGIMiddleware
 from sqlalchemy.exc import IntegrityError
 import starlette
@@ -42,6 +42,11 @@ async def patch_user(id: int, patched_user: UserPatch):
     result.union_number = patched_user.union_number
     db.session.flush()
     return result
+
+
+@app.get('/')
+async def to_dashboard():
+    return RedirectResponse("/dashboard")
 
 
 @app.exception_handler(ValidationError)

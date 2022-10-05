@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from marketing_api.settings import get_settings
 from marketing_api.models.db import ActionsInfo
 from datetime import datetime, timedelta
+from dash.dcc import Graph
 
 
 def count_users_in_daterange(session: Session, start_ts: datetime, end_ts: datetime) -> int:
@@ -19,11 +20,10 @@ def count_users_in_daterange(session: Session, start_ts: datetime, end_ts: datet
     ). \
         distinct(ActionsInfo.user_id). \
         count()
-    session.flush()
     return res
 
 
-def count_dau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_ts=datetime.utcnow()) -> dict[str, int]:
+def graph_dau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_ts=datetime.utcnow()) -> Graph:
     res = dict()
     curr = start_ts
     while end_ts >= curr:
@@ -31,10 +31,22 @@ def count_dau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_t
             (curr + timedelta(days=1)).date().isoformat()
         ] = count_users_in_daterange(session, start_ts=curr, end_ts=(curr + timedelta(days=1)))
         curr += timedelta(days=1)
-    return res
+    return Graph(
+        id='dau-graph',
+        figure={
+            'data': [
+                {'x': list(res.keys()), 'y': list(res.values()), 'type': 'line', 'name': 'DAU'},
+            ],
+            'layout': {
+                'title': 'Daily active users',
+                'xlabel': 'date',
+                'ylabel': 'users',
+            }
+        }
+    )
 
 
-def count_wau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_ts=datetime.utcnow()) -> dict[str, int]:
+def graph_wau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_ts=datetime.utcnow()) -> Graph:
     res = dict()
     curr = start_ts - timedelta(days=abs(start_ts.weekday() - (end_ts.weekday() - 6)))
     while end_ts >= curr + timedelta(days=6):
@@ -42,10 +54,22 @@ def count_wau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_t
             f"{curr.date().isoformat()} - {(curr + timedelta(days=7)).date().isoformat()}"
         ] = count_users_in_daterange(session, start_ts=curr, end_ts=(curr + timedelta(days=7)))
         curr += timedelta(days=7)
-    return res
+    return Graph(
+        id='wau-graph',
+        figure={
+            'data': [
+                {'x': list(res.keys()), 'y': list(res.values()), 'type': 'line', 'name': 'WAU'},
+            ],
+            'layout': {
+                'title': 'Weekly active users',
+                'xaxis_title': 'date',
+                'yaxis_title': 'users',
+            }
+        }
+    )
 
 
-def count_mau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_ts=datetime.utcnow()) -> dict[str, int]:
+def graph_mau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_ts=datetime.utcnow()) -> Graph:
     res = dict()
     curr = start_ts - timedelta(days=30 - (end_ts.day - start_ts.day) % 30)
     while end_ts >= curr + timedelta(days=29):
@@ -53,4 +77,16 @@ def count_mau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_t
             f"{curr.date().isoformat()} - {(curr + timedelta(days=30)).date().isoformat()}"
         ] = count_users_in_daterange(session, start_ts=curr, end_ts=(curr + timedelta(days=30)))
         curr += timedelta(days=30)
-    return res
+    return Graph(
+        id='mau-graph',
+        figure={
+            'data': [
+                {'x': list(res.keys()), 'y': list(res.values()), 'type': 'line', 'name': 'MAU'},
+            ],
+            'layout': {
+                'title': 'Monthly active users',
+                'xaxis_title': 'date',
+                'yaxis_title': 'users',
+            }
+        }
+    )
