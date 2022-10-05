@@ -71,7 +71,7 @@ def graph_wau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_t
 
 def graph_mau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_ts=datetime.utcnow()) -> Graph:
     res = dict()
-    curr = start_ts - timedelta(days=30 - (end_ts.day - start_ts.day) % 30)
+    curr = start_ts - timedelta(days=29 - (end_ts.day - start_ts.day) % 30)
     while end_ts >= curr + timedelta(days=29):
         res[
             f"{curr.date().isoformat()} - {(curr + timedelta(days=30)).date().isoformat()}"
