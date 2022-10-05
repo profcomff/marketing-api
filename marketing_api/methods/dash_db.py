@@ -47,11 +47,10 @@ def count_wau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_t
 
 def count_mau(session: Session, start_ts: datetime = datetime(2022, 9, 1), end_ts=datetime.utcnow()) -> dict[str, int]:
     res = dict()
-    curr = start_ts - timedelta(days=28 - (end_ts.day - start_ts.day) % 28)
-    while end_ts >= curr + timedelta(days=27):
+    curr = start_ts - timedelta(days=30 - (end_ts.day - start_ts.day) % 30)
+    while end_ts >= curr + timedelta(days=29):
         res[
-            f"{curr.date().isoformat()} - {(curr + timedelta(weeks=4)).date().isoformat()}"
-        ] = count_users_in_daterange(session, start_ts=curr, end_ts=(curr + timedelta(weeks=4)))
-        curr += timedelta(weeks=4)
+            f"{curr.date().isoformat()} - {(curr + timedelta(days=30)).date().isoformat()}"
+        ] = count_users_in_daterange(session, start_ts=curr, end_ts=(curr + timedelta(days=30)))
+        curr += timedelta(days=30)
     return res
-
