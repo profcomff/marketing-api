@@ -4,11 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi.exceptions import HTTPException
 from fastapi_sqlalchemy import db
-from starlette.responses import PlainTextResponse
+from starlette.responses import PlainTextResponse, RedirectResponse
+from starlette.middleware.wsgi import WSGIMiddleware
 from sqlalchemy.exc import IntegrityError
 import starlette
 from marketing_api import get_settings
 from marketing_api.models import ActionsInfo
+from marketing_api.dashboard.base import dash_app
 from .models import ActionInfo, User, UserPatch
 from marketing_api.models.db import User as DbUser
 from pydantic import ValidationError
@@ -32,7 +34,7 @@ async def create_user():
     return user
 
 
-@app.patch('/v1/user/{id}')
+@app.patch('/v1/user/{id}', response_model=User)
 async def patch_user(id: int, patched_user: UserPatch):
     result: DbUser = db.session.query(DbUser).filter(DbUser.id == id).one_or_none()
     if not result:
@@ -40,6 +42,11 @@ async def patch_user(id: int, patched_user: UserPatch):
     result.union_number = patched_user.union_number
     db.session.flush()
     return result
+
+
+@app.get('/')
+async def to_dashboard():
+    return RedirectResponse("/dashboard")
 
 
 @app.exception_handler(ValidationError)
@@ -65,3 +72,6 @@ app.add_middleware(
     allow_methods=settings.CORS_ALLOW_METHODS,
     allow_headers=settings.CORS_ALLOW_HEADERS,
 )
+
+app.mount("/dashboard", WSGIMiddleware(dash_app.server))
+
