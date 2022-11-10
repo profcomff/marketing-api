@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from marketing_api.settings import get_settings
 from marketing_api.models.db import ActionsInfo
 from datetime import datetime, timedelta
 from dash.dcc import Graph

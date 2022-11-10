@@ -1,2 +1,4 @@
 requests
+pytest
+pytest-cov
 black
