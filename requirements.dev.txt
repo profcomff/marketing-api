@@ -2,3 +2,4 @@ requests
 pytest
 pytest-cov
 black
+httpx
