@@ -61,26 +61,33 @@ jobs:
       packages: read
 
     steps:
-      - name: Run docker container
-        run: |
-          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
-          docker stop ${{ env.CONTAITER_NAME }} || true && docker rm ${{ env.CONTAITER_NAME }} || true
+    steps:
+      - name: name: Pull new version
+        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
+      - name: Migrate DB
+        run: |
           docker run \
             --rm \
             --network=web \
             --env DB_DSN=${{ secrets.DB_DSN }} \
             --name ${{ env.CONTAITER_NAME }}_migration \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test \
+            --workdir="/" \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
             alembic upgrade head
 
+      - name: Run new version
+        run: |
+          docker stop ${{ env.CONTAITER_NAME }} || true && docker rm ${{ env.CONTAITER_NAME }} || true
           docker run \
             --detach \
-            --restart on-failure:3 \
+            --restart always \
             --network=web \
             --env DB_DSN=${{ secrets.DB_DSN }} \
+            --env ROOT_PATH='/marketing' \
+            --env GUNICORN_CMD_ARGS='--log-config logging_prod.conf' \
             --name ${{ env.CONTAITER_NAME }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
 
   deploy-production:
@@ -97,23 +104,29 @@ jobs:
       packages: read
 
     steps:
-      - name: Run docker container
-        run: |
-          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          docker stop ${{ env.CONTAITER_NAME }} || true && docker rm ${{ env.CONTAITER_NAME }} || true
+      - name: name: Pull new version
+        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
+      - name: Migrate DB
+        run: |
           docker run \
             --rm \
             --network=web \
             --env DB_DSN=${{ secrets.DB_DSN }} \
             --name ${{ env.CONTAITER_NAME }}_migration \
+            --workdir="/" \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
             alembic upgrade head
 
+      - name: Run new version
+        run: |
+          docker stop ${{ env.CONTAITER_NAME }} || true && docker rm ${{ env.CONTAITER_NAME }} || true
           docker run \
             --detach \
             --restart always \
             --network=web \
             --env DB_DSN=${{ secrets.DB_DSN }} \
+            --env ROOT_PATH='/marketing' \
+            --env GUNICORN_CMD_ARGS='--log-config logging_prod.conf' \
             --name ${{ env.CONTAITER_NAME }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
