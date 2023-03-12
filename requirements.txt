@@ -11,3 +11,5 @@ dash-html-components
 dash-core-components
 dash-table
 pandas
+auth-lib-profcomff[fastapi]
+python-telegram-bot
