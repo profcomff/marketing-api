@@ -21,10 +21,8 @@ from .models import ActionInfo, User, UserPatch
 
 settings = get_settings()
 app = FastAPI(
-    title='Сервис мониторинга активности',
-    description=(
-        'Серверная часть сервиса для выдачи печенек за активности'
-    ),
+    title='Сервис мониторинга активности пользователей',
+    description='API для проведения маркетинговых исследований',
     version=__version__,
 
     # Настраиваем интернет документацию
