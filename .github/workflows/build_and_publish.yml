@@ -61,7 +61,7 @@ jobs:
       packages: read
 
     steps:
-      - name: name: Pull new version
+      - name: Pull new version
         run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Migrate DB
@@ -103,7 +103,7 @@ jobs:
       packages: read
 
     steps:
-      - name: name: Pull new version
+      - name: Pull new version
         run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Migrate DB
