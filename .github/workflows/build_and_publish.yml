@@ -80,7 +80,7 @@ jobs:
           docker stop ${{ env.CONTAITER_NAME }} || true && docker rm ${{ env.CONTAITER_NAME }} || true
           docker run \
             --detach \
-            --restart always \
+            --restart on-failure:3 \
             --network=web \
             --env DB_DSN=${{ secrets.DB_DSN }} \
             --env ROOT_PATH='/marketing' \
