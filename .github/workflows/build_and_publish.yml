@@ -45,6 +45,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            APP_VERSION=${{ github.ref_name }}
 
   deploy-testing:
     name: Deploy Testing
@@ -52,7 +54,7 @@ jobs:
     runs-on: [self-hosted, Linux]
     environment:
       name: Testing
-      url: https://marketing.api.test.profcomff.com/
+      url: https://api.test.profcomff.com/marketing
     env:
       CONTAITER_NAME: com_profcomff_api_marketing_test
     permissions:
@@ -63,7 +65,7 @@ jobs:
         run: |
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
           docker stop ${{ env.CONTAITER_NAME }} || true && docker rm ${{ env.CONTAITER_NAME }} || true
-          
+
           docker run \
             --rm \
             --network=web \
@@ -79,7 +81,7 @@ jobs:
             --env DB_DSN=${{ secrets.DB_DSN }} \
             --name ${{ env.CONTAITER_NAME }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
-          
+
 
   deploy-production:
     name: Deploy Production
@@ -88,7 +90,7 @@ jobs:
     runs-on: [ self-hosted, Linux ]
     environment:
       name: Production
-      url: https://marketing.api.profcomff.com/
+      url: https://api.profcomff.com/marketing
     env:
       CONTAITER_NAME: com_profcomff_api_marketing
     permissions:
@@ -99,7 +101,7 @@ jobs:
         run: |
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           docker stop ${{ env.CONTAITER_NAME }} || true && docker rm ${{ env.CONTAITER_NAME }} || true
-          
+
           docker run \
             --rm \
             --network=web \

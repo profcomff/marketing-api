@@ -1,3 +1,4 @@
-from .settings import get_settings
+import os
 
-__all__ = ["get_settings"]
+
+__version__ = os.getenv('APP_VERSION', 'dev')

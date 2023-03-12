@@ -1,11 +1,15 @@
-FROM python:3.10
-WORKDIR /app
+FROM python:3.11
+ARG APP_VERSION=dev
+ENV APP_VERSION=${APP_VERSION}
+ENV APP_NAME=marketing_api
+ENV APP_MODULE=${APP_NAME}.routes.base:app
 
 COPY ./requirements.txt /app/
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install -U -r /app/requirements.txt
 
-ADD gunicorn_conf.py alembic.ini /app/
-ADD migrations /app/migrations
-ADD marketing_api /app/marketing_api
+COPY ./alembic.ini /alembic.ini
+COPY ./logging_prod.conf /app/
+COPY ./logging_test.conf /app/
+COPY ./migrations /migrations/
 
-CMD [ "gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-c", "/app/gunicorn_conf.py", "marketing_api.routes.base:app" ]
+COPY ./${APP_NAME} /app/${APP_NAME}
