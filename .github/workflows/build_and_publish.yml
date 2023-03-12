@@ -62,7 +62,7 @@ jobs:
 
     steps:
       - name: Pull new version
-        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
 
       - name: Migrate DB
         run: |
@@ -72,7 +72,7 @@ jobs:
             --env DB_DSN=${{ secrets.DB_DSN }} \
             --name ${{ env.CONTAITER_NAME }}_migration \
             --workdir="/" \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test \
             alembic upgrade head
 
       - name: Run new version
@@ -84,9 +84,9 @@ jobs:
             --network=web \
             --env DB_DSN=${{ secrets.DB_DSN }} \
             --env ROOT_PATH='/marketing' \
-            --env GUNICORN_CMD_ARGS='--log-config logging_prod.conf' \
+            --env GUNICORN_CMD_ARGS='--log-config logging_test.conf' \
             --name ${{ env.CONTAITER_NAME }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
 
 
   deploy-production:
