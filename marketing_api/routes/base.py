@@ -75,8 +75,7 @@ async def http_error_handler(req, exc):
 app.add_middleware(
     DBSessionMiddleware,
     db_url=settings.DB_DSN,
-    session_args={"autocommit": True},
-    engine_args={"pool_pre_ping": True}
+    engine_args={"pool_pre_ping": True, "isolation_level": "AUTOCOMMIT"},
 )
 
 app.add_middleware(
