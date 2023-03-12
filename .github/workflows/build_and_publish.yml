@@ -61,7 +61,6 @@ jobs:
       packages: read
 
     steps:
-    steps:
       - name: name: Pull new version
         run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
