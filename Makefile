@@ -8,9 +8,9 @@ venv:
 	python3.11 -m venv venv
 
 format:
-	autoflake -r --in-place --remove-all-unused-imports ./marketing_api
-	isort ./marketing_api
-	black ./marketing_api
+	source ./venv/bin/activate && autoflake -r --in-place --remove-all-unused-imports ./marketing_api
+	source ./venv/bin/activate && isort ./marketing_api
+	source ./venv/bin/activate && black ./marketing_api
 
 db:
 	docker run -d -p 5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust --name db-marketing-backend postgres:15

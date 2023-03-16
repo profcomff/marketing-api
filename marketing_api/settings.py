@@ -1,7 +1,7 @@
 import os
 from functools import lru_cache
 
-from pydantic import BaseSettings, PostgresDsn, AnyHttpUrl
+from pydantic import BaseSettings, PostgresDsn
 
 
 class Settings(BaseSettings):

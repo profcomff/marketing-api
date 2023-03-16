@@ -1,8 +1,10 @@
+import enum
 from datetime import datetime
+
 import sqlalchemy.orm
 from sqlalchemy import Column
+
 from .base import Base
-import enum
 
 
 class Actions(str, enum.Enum):

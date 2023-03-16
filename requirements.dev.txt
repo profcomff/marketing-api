@@ -5,3 +5,4 @@ black
 httpx
 autoflake
 isort
+pytest_mock

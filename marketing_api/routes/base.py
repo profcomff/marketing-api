@@ -1,20 +1,14 @@
-from pydantic import ValidationError
 from fastapi import FastAPI
-from fastapi import Path
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi.exceptions import HTTPException
-from fastapi_sqlalchemy import db
-from starlette.responses import PlainTextResponse, RedirectResponse
-from starlette.middleware.wsgi import WSGIMiddleware
-from sqlalchemy.exc import IntegrityError
-import starlette
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi_sqlalchemy import DBSessionMiddleware, db
+from pydantic import ValidationError
+from starlette.responses import PlainTextResponse
 
 from marketing_api import __version__
-from marketing_api.settings import get_settings
 from marketing_api.models import ActionsInfo
-from marketing_api.dashboard.base import dash_app
 from marketing_api.models.db import User as DbUser
+from marketing_api.settings import get_settings
 
 from .models import ActionInfo, User, UserPatch
 
@@ -24,7 +18,6 @@ app = FastAPI(
     title='Сервис мониторинга активности пользователей',
     description='API для проведения маркетинговых исследований',
     version=__version__,
-
     # Настраиваем интернет документацию
     root_path=settings.ROOT_PATH if __version__ != 'dev' else '/',
     docs_url=None if __version__ != 'dev' else '/docs',
