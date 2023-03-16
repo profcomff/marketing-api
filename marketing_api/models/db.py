@@ -18,7 +18,7 @@ class ActionsInfo(Base):
     """Actions from user"""
 
     id = Column(sqlalchemy.Integer, primary_key=True)
-    user_id = Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("user.id"))
+    user_id = Column(sqlalchemy.Integer)
     action = Column(sqlalchemy.String, nullable=False)
     path_from = Column(sqlalchemy.String, nullable=False)
     path_to = Column(sqlalchemy.String, nullable=True)
