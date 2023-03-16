@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+import logging
+
+from auth_lib.fastapi import UnionAuth
+from fastapi import FastAPI, Depends
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_sqlalchemy import DBSessionMiddleware, db
@@ -14,6 +17,7 @@ from .models import ActionInfo, User, UserPatch
 
 
 settings = get_settings()
+logger = logging.getLogger(__name__)
 app = FastAPI(
     title='Сервис мониторинга активности пользователей',
     description='API для проведения маркетинговых исследований',
@@ -26,18 +30,29 @@ app = FastAPI(
 
 
 @app.post('/v1/action')
-async def write_action(user_action_info: ActionInfo):
-    db.session.add(ActionsInfo(**user_action_info.dict()))
+async def write_action(
+    user_action_info: ActionInfo,
+    user=Depends(UnionAuth(auto_error=False, allow_none=True)),
+):
+    user_id = user.get("id") if user else None
+    logger.debug(f"write_action {user_id=}")
+    ai = ActionsInfo(**user_action_info.dict())
+    db.session.add(ai)
+    db.session.flush()
+    logger.debug(ai.user)
+    ai.user.auth_user_id = user_id
     db.session.flush()
     return PlainTextResponse(status_code=200)
 
 
 @app.post('/v1/user', response_model=User)
-async def create_user():
-    user = DbUser()
-    db.session.add(user)
+async def create_user(user=Depends(UnionAuth(auto_error=False, allow_none=True))):
+    logger.debug(f"create_user {user=}")
+    dbuser = DbUser()
+    dbuser.auth_user_id = user.get("id") if user else None
+    db.session.add(dbuser)
     db.session.flush()
-    return user
+    return dbuser
 
 
 @app.patch('/v1/user/{id}', response_model=User)
