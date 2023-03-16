@@ -22,6 +22,13 @@ class User(Base):
     modify_ts = Column(sa.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
     create_ts = Column(sa.DateTime, nullable=False, default=datetime.utcnow)
 
+    actions = relationship(
+        "ActionsInfo",
+        primaryjoin="foreign(ActionsInfo.user_id)==User.id",
+        uselist=True,
+        back_populates="user",
+    )
+
     def __repr__(self):
         return f"User(id={self.id}, union_number={self.union_number}, auth_user_id={self.auth_user_id})"
 
@@ -37,7 +44,12 @@ class ActionsInfo(Base):
     additional_data = Column(sa.String, nullable=True)
     create_ts = Column(sa.DateTime, nullable=False, default=datetime.utcnow)
 
-    user = relationship(User, primaryjoin="foreign(ActionsInfo.user_id)==User.id", uselist=False)
+    user = relationship(
+        User,
+        primaryjoin="foreign(ActionsInfo.user_id)==User.id",
+        uselist=False,
+        back_populates="actions"
+    )
 
     def __repr__(self):
         return f"ActionInfo(user_id={self.user_id}, action={self.action})"
