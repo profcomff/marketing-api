@@ -57,11 +57,6 @@ async def patch_user(id: int, patched_user: UserPatch):
     return result
 
 
-@app.get('/')
-async def to_dashboard():
-    return RedirectResponse("/dashboard")
-
-
 @app.exception_handler(ValidationError)
 async def http_validation_error_handler(req, exc):
     return PlainTextResponse("Invalid data", status_code=422)
@@ -85,6 +80,3 @@ app.add_middleware(
     allow_methods=settings.CORS_ALLOW_METHODS,
     allow_headers=settings.CORS_ALLOW_HEADERS,
 )
-
-app.mount("/dashboard", WSGIMiddleware(dash_app.server))
-
