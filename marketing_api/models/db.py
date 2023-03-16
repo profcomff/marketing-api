@@ -30,9 +30,9 @@ class ActionsInfo(Base):
     """Actions from user"""
 
     id = Column(sa.Integer, primary_key=True)
-    user_id = Column(sa.Integer)
+    user_id = Column(sa.Integer, nullable=False)
     action = Column(sa.String, nullable=False)
-    path_from = Column(sa.String, nullable=False)
+    path_from = Column(sa.String, nullable=True)
     path_to = Column(sa.String, nullable=True)
     additional_data = Column(sa.String, nullable=True)
     create_ts = Column(sa.DateTime, nullable=False, default=datetime.utcnow)
