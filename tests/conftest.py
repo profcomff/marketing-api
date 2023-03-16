@@ -8,10 +8,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def client():
     client = TestClient(app)
-    return client
+    yield client
 
 
 @pytest.fixture(scope='session')
@@ -20,7 +20,7 @@ def dbsession():
     engine = create_engine(settings.DB_DSN)
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     Base.metadata.create_all(bind=engine)
-    return TestingSessionLocal()
+    yield TestingSessionLocal()
 
 
 @pytest.fixture

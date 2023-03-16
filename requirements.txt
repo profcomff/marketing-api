@@ -6,10 +6,5 @@ uvicorn
 alembic
 SQLAlchemy
 gunicorn
-dash
-dash-html-components
-dash-core-components
-dash-table
-pandas
 auth-lib-profcomff[fastapi]
 logging-profcomff

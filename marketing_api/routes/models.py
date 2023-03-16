@@ -1,4 +1,4 @@
-from pydantic import BaseModel, AnyHttpUrl
+from pydantic import BaseModel
 
 
 class Base(BaseModel):
@@ -10,7 +10,7 @@ class ActionInfo(Base):
     user_id: int | None
     action: str
     additional_data: str | None
-    path_from: str
+    path_from: str | None
     path_to: str | None
 
 
@@ -20,4 +20,5 @@ class User(Base):
 
 
 class UserPatch(Base):
-    union_number: str
+    union_number: str | None
+    auth_user_id: int | None

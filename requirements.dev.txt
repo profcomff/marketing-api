@@ -3,3 +3,6 @@ pytest
 pytest-cov
 black
 httpx
+autoflake
+isort
+pytest_mock
