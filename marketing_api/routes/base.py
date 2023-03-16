@@ -34,20 +34,26 @@ async def write_action(
     user_action_info: ActionInfo,
     user=Depends(UnionAuth(auto_error=False, allow_none=True)),
 ):
+    """Создать действие"""
     user_id = user.get("id") if user else None
-    logger.debug(f"write_action {user_id=}")
+    logger.debug(f"write_action by {user_id=}")
     ai = ActionsInfo(**user_action_info.dict())
     db.session.add(ai)
     db.session.flush()
-    logger.debug(ai.user)
-    ai.user.auth_user_id = user_id
-    db.session.flush()
+    if ai.user:
+        logger.debug(ai.user)
+        ai.user.auth_user_id = user_id
+        db.session.flush()
+    else:
+        logger.warning("write_action with user not exists! %d", user_action_info.user_id)
     return PlainTextResponse(status_code=200)
 
 
 @app.post('/v1/user', response_model=User)
 async def create_user(user=Depends(UnionAuth(auto_error=False, allow_none=True))):
-    logger.debug(f"create_user {user=}")
+    """Создать уникальный идентификатор установки"""
+    user_id = user.get("id") if user else None
+    logger.debug(f"create_user by {user_id=}")
     dbuser = DbUser()
     dbuser.auth_user_id = user.get("id") if user else None
     db.session.add(dbuser)
@@ -56,11 +62,24 @@ async def create_user(user=Depends(UnionAuth(auto_error=False, allow_none=True))
 
 
 @app.patch('/v1/user/{id}', response_model=User)
-async def patch_user(id: int, patched_user: UserPatch):
+async def patch_user(
+    id: int,
+    patched_user: UserPatch,
+    user=Depends(UnionAuth(["marketing.user.patch"]))
+):
+    """Изменить пользователя в маркетинге
+
+    Необходимые scopes: `marketing.user.patch`
+    """
+    user_id = user.get("id") if user else None
+    logger.debug(f"patch_user by {user_id=}")
     result: DbUser = db.session.query(DbUser).filter(DbUser.id == id).one_or_none()
     if not result:
         raise HTTPException(404, "No user found")
-    result.union_number = patched_user.union_number
+    if patched_user.union_number:
+        result.union_number = patched_user.union_number
+    if patched_user.auth_user_id:
+        result.union_number = patched_user.auth_user_id
     db.session.flush()
     return result
 
