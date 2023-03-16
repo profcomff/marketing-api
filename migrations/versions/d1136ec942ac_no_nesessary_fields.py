@@ -17,10 +17,8 @@ depends_on = None
 
 
 def upgrade():
-    op.alter_column('actions_info', 'user_id', existing_type=sa.INTEGER(), nullable=False)
     op.alter_column('actions_info', 'path_from', existing_type=sa.VARCHAR(), nullable=True)
 
 
 def downgrade():
-    op.alter_column('actions_info', 'path_from', existing_type=sa.VARCHAR(), nullable=False)
     op.alter_column('actions_info', 'user_id', existing_type=sa.INTEGER(), nullable=True)

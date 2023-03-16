@@ -20,5 +20,5 @@ class User(Base):
 
 
 class UserPatch(Base):
-    union_number: str
-    auth_user_id: int
+    union_number: str | None
+    auth_user_id: int | None

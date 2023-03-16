@@ -45,7 +45,7 @@ async def write_action(
         ai.user.auth_user_id = user_id
         db.session.flush()
     else:
-        logger.warning("write_action with user not exists! %d", user_action_info.user_id)
+        logger.warning(f"write_action with user {user_action_info.user_id} not exists!")
     return PlainTextResponse(status_code=200)
 
 
