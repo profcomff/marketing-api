@@ -1,7 +1,8 @@
-from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
-from marketing_api.routes.models import ActionInfo, User
 import json
+
+from fastapi.testclient import TestClient
+from pytest_mock import MockerFixture
+from sqlalchemy.orm import Session
 
 
 def test_can_post_without_user_id(client: TestClient, dbsession: Session):
@@ -34,7 +35,16 @@ def test_cannot_post_invalid_info(client: TestClient):
     assert response.status_code == 422
 
 
-def test_can_patch_user(client: TestClient):
+def test_can_patch_user(client: TestClient, mocker: MockerFixture):
+    user_mock = mocker.patch('auth_lib.fastapi.UnionAuth.__call__')
+    user_mock.return_value = {
+        "session_scopes": [{"id": 0, "name": "string", "comment": "string"}],
+        "user_scopes": [{"id": 0, "name": "string", "comment": "string"}],
+        "indirect_groups": [{"id": 0, "name": "string", "parent_id": 0}],
+        "groups": [{"id": 0, "name": "string", "parent_id": 0}],
+        "id": 0,
+        "email": "string",
+    }
     db_user = client.post("/v1/user")
     user_id = db_user.json()['id']
     patch = json.dumps({'union_number': '666'})
