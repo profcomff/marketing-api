@@ -6,4 +6,3 @@ httpx
 autoflake
 isort
 pytest_mock
-isort
