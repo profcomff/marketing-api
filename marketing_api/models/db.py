@@ -45,10 +45,7 @@ class ActionsInfo(Base):
     create_ts = Column(sa.DateTime, nullable=False, default=datetime.utcnow)
 
     user = relationship(
-        User,
-        primaryjoin="foreign(ActionsInfo.user_id)==User.id",
-        uselist=False,
-        back_populates="actions"
+        User, primaryjoin="foreign(ActionsInfo.user_id)==User.id", uselist=False, back_populates="actions"
     )
 
     def __repr__(self):

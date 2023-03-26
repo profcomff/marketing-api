@@ -62,11 +62,7 @@ async def create_user(user=Depends(UnionAuth(auto_error=False, allow_none=True))
 
 
 @app.patch('/v1/user/{id}', response_model=User)
-async def patch_user(
-    id: int,
-    patched_user: UserPatch,
-    user=Depends(UnionAuth(["marketing.user.patch"]))
-):
+async def patch_user(id: int, patched_user: UserPatch, user=Depends(UnionAuth(["marketing.user.patch"]))):
     """Изменить пользователя в маркетинге
 
     Необходимые scopes: `marketing.user.patch`
