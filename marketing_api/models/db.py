@@ -2,8 +2,8 @@ import enum
 from datetime import datetime
 
 import sqlalchemy as sa
-from sqlalchemy.orm import relationship
 from sqlalchemy import Column
+from sqlalchemy.orm import relationship
 
 from .base import Base
 

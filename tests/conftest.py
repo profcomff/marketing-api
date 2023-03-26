@@ -1,11 +1,12 @@
-from marketing_api.routes.base import app
-from marketing_api.settings import get_settings
-from marketing_api.models.base import Base
-from marketing_api.models.db import User
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
+
+from marketing_api.models.base import Base
+from marketing_api.models.db import User
+from marketing_api.routes.base import app
+from marketing_api.settings import get_settings
 
 
 @pytest.fixture()
