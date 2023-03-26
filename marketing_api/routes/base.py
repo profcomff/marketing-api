@@ -1,7 +1,7 @@
 import logging
 
 from auth_lib.fastapi import UnionAuth
-from fastapi import FastAPI, Depends
+from fastapi import Depends, FastAPI
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_sqlalchemy import DBSessionMiddleware, db
@@ -62,11 +62,7 @@ async def create_user(user=Depends(UnionAuth(auto_error=False, allow_none=True))
 
 
 @app.patch('/v1/user/{id}', response_model=User)
-async def patch_user(
-    id: int,
-    patched_user: UserPatch,
-    user=Depends(UnionAuth(["marketing.user.patch"]))
-):
+async def patch_user(id: int, patched_user: UserPatch, user=Depends(UnionAuth(["marketing.user.patch"]))):
     """Изменить пользователя в маркетинге
 
     Необходимые scopes: `marketing.user.patch`
