@@ -1,7 +1,8 @@
 import logging
+from typing import Annotated
 
 from auth_lib.fastapi import UnionAuth
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Header
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_sqlalchemy import DBSessionMiddleware, db
@@ -33,6 +34,7 @@ app = FastAPI(
 async def write_action(
     user_action_info: ActionInfo,
     user=Depends(UnionAuth(auto_error=False, allow_none=True)),
+    user_agent: Annotated[str | None, Header()] = None,
 ):
     """Создать действие"""
     user_id = user.get("id") if user else None
@@ -43,6 +45,7 @@ async def write_action(
     if ai.user:
         logger.debug(ai.user)
         ai.user.auth_user_id = user_id
+        ai.user.user_agent = user_agent
         db.session.flush()
     else:
         logger.warning(f"write_action with user {user_action_info.user_id} not exists!")
