@@ -113,7 +113,6 @@ jobs:
             --rm \
             --network=web \
             --env DB_DSN=${{ secrets.DB_DSN }} \
-            --env AUTH_URL='https://api.profcomff.com/auth' \
             --name ${{ env.CONTAINER_NAME }}_migration \
             --workdir="/" \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
@@ -127,6 +126,7 @@ jobs:
             --restart always \
             --network=web \
             --env DB_DSN=${{ secrets.DB_DSN }} \
+            --env AUTH_URL='https://api.profcomff.com/auth' \
             --env ROOT_PATH='/marketing' \
             --env GUNICORN_CMD_ARGS='--log-config logging_prod.conf' \
             --name ${{ env.CONTAINER_NAME }} \
