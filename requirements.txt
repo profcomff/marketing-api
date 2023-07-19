@@ -8,3 +8,4 @@ SQLAlchemy
 gunicorn
 auth-lib-profcomff[fastapi]
 logging-profcomff
+pydantic-settings
