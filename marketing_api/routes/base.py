@@ -39,7 +39,7 @@ async def write_action(
     """Создать действие"""
     user_id = user.get("id") if user else None
     logger.debug(f"write_action by {user_id=}")
-    ai = ActionsInfo(**user_action_info.dict())
+    ai = ActionsInfo(**user_action_info.model_dump())
     db.session.add(ai)
     db.session.flush()
     if ai.user:
@@ -95,7 +95,7 @@ async def http_error_handler(req, exc):
 
 app.add_middleware(
     DBSessionMiddleware,
-    db_url=settings.DB_DSN,
+    db_url=str(settings.DB_DSN),
     engine_args={"pool_pre_ping": True, "isolation_level": "AUTOCOMMIT"},
 )
 
