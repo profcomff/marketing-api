@@ -2,7 +2,6 @@ import json
 
 from fastapi.testclient import TestClient
 from pytest_mock import MockerFixture
-from sqlalchemy.orm import Session
 
 
 def test_can_post_without_user_id(client: TestClient):
