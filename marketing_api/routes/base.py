@@ -24,7 +24,7 @@ app = FastAPI(
     description='API для проведения маркетинговых исследований',
     version=__version__,
     # Настраиваем интернет документацию
-    root_path=settings.ROOT_PATH if __version__ != 'dev' else '/',
+    root_path=settings.ROOT_PATH if __version__ != 'dev' else '',
     docs_url=None if __version__ != 'dev' else '/docs',
     redoc_url=None,
 )
