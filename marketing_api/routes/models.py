@@ -8,7 +8,7 @@ class Base(BaseModel):
 class ActionInfo(Base):
     user_id: int | None = None
     action: str
-    additional_data: str | None = None
+    additional_data: dict | None = None
     path_from: str | None = None
     path_to: str | None = None
 
